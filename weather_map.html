@@ -12,9 +12,15 @@
 
 </head>
 <body>
+    <script>
+        $.get("http://api.openweathermap.org/data/2.5/weather", {
+            APPID: OPEN_WEATHER_APPID,
+            q:     "San Antonio, US"
+        });
+    </script>
 
-
-    <!--jQuery Library follows-->
+    <script src = "../weathermap-api-project/keys.jss.js">
+    <!--jQuery Library follows (always at the end of the body, but before Bootstrap)-->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <!--Bootstrap Library follows-->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
