@@ -1,3 +1,3 @@
 
 //Open Weather Map API Key
-const openWeatherMapAPIkey = 'e0d25cb84d6f61d8fb6e820a7a9b72a2';
+const openWeatherMapAPIkey = "feafd6977e777352873ac6e055014150";
