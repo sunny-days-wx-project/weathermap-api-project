@@ -40,7 +40,7 @@
     <!--Search Bar starts here-->
         <div class="container-fluid">
             <div class="row d-flex align-items-center" id="row-form">
-            <form class="form-inline m-0 p-3">
+            <form class="form-inline m-0 py-3">
 
                     <input type="test" class="form-control mx-2" id="location" placeholder="City, State">
 
@@ -51,7 +51,7 @@
 
     <!--5 Day Forecast Cards Starts here-->
         <div class="container-fluid">
-            <div class="row p-3 d-flex justify-content-between">
+            <div class="row p-2 d-flex justify-content-between">
 
                 <!--Day 1 Card-->
                 <div class="card">
@@ -107,11 +107,10 @@
 
     <!--Map Viewport Starts Here-->
     <div class="container-fluid">
-        <div class="row d-flex justify-content-center">
+        <div class="row d-flex justify-content-center py-2">
             <div id='map' class="m-auto"></div>
         </div>
     </div>
-
 
     <!-- Mapbox JS -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
@@ -156,7 +155,9 @@
         });
         //====================================================
 
-
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmEtY29kZXVwIiwiYSI6ImNrcHJjczFyYTBtMHIyb2xlNDBsanlva2EifQ.rXUs9LI80u-fy9wz-bG0Qw';
+        // my personal created token below
+        var accessToken = 'pk.eyJ1IjoiZGVyZWtiZXJrbGV5IiwiYSI6ImNsMnFteTlidjAxNmYzYnVocHRycHlqM24ifQ.Z28GcH4GAsjBOS4jyREK1Q';
         let map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
