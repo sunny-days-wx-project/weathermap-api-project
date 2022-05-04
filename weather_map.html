@@ -18,14 +18,42 @@
 
 
     <script>
-        // Query for SATX wx w/ ajax GET request
+        //====================================================
+        // Query for CURRENT wx in SATX w/ ajax GET request
         // Console logged the response with .done() method to view data
         $.get("http://api.openweathermap.org/data/2.5/weather", {
-            APPID: OPEN_WEATHER_APPID,
-            q:     "San Antonio, US"
+            APPID: openWeatherMapAPIkey,
+            q:     "San Antonio, US",
+            units: "imperial"
         }).done(function(data) {
             console.log(data);
         });
+        //====================================================
+
+        //====================================================
+        // Query for FORECASTED wx in SATX w/ ajax GET request
+        $.get("http://api.openweathermap.org/data/2.5/forecast", {
+            APPID: openWeatherMapAPIkey,
+            q:     "San Antonio, US", //also able to use lat/lon or cityID from database file
+            units: "imperial"
+        }).done(function(data) {
+            console.log('5 day forecast', data);
+        });
+        //====================================================
+
+        //====================================================
+        // 'One Call API' is a single request for 'all essential weather data' in SATX
+        $.get("http://api.openweathermap.org/data/2.5/onecall", {
+            APPID: OPEN_WEATHER_APPID,
+            lat:    29.423017,
+            lon:   -98.48527,
+            units: "imperial"
+        }).done(function(data) {
+            console.log('The entire response:', data);
+            console.log('Diving in - here is current information: ', data.current);
+            console.log('A step further - information for tomorrow: ', data.daily[1]);
+        });
+        //====================================================
     </script>
 
 <!--**********************************************************-->
