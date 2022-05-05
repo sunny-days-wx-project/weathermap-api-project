@@ -140,6 +140,7 @@
             units: "imperial"
         }).done(function(data) {
             console.log('5 day forecast', data);
+            getDates(data);
         });
         //====================================================
 
@@ -154,7 +155,10 @@
             console.log('The entire response:', data);
             console.log('Diving in - here is current information: ', data.current);
             console.log('A step further - information for tomorrow: ', data.daily[1]);
+
         });
+
+
         //====================================================
 
         mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmEtY29kZXVwIiwiYSI6ImNrcHJjczFyYTBtMHIyb2xlNDBsanlva2EifQ.rXUs9LI80u-fy9wz-bG0Qw';
@@ -165,6 +169,49 @@
             center: [-98, 30], // starting position [lng, lat]
             zoom: 9 // starting zoom
         });
+    </script>
+    <script>
+// <!--        write a function that takes the date from the data and separates the date only and returns -->
+// $.get("http://api.openweathermap.org/data/2.5/onecall", {
+//     APPID: openWeatherMapAPIkey,
+//     lat:    29.423017,
+//     lon:   -98.48527,
+//     units: "imperial"
+// }).done(function(data) {
+//     getDates(data);
+//
+// });
+
+
+
+// <!--        assign the date from the array to a variable-->
+function getDate(someData, i) {
+    // gets list zero and assigns the date-time to a variable
+    // var dateTime = someData
+    // create a substring that contains just the date
+    var date = someData.substring(0, 10);
+    console.log(i);
+    console.log(date);
+
+}
+
+function getDates(OGDateArray) {
+    // assign original weather object 3 hour forecasts to a variable
+    var threeHourForecasts = OGDateArray.list;
+    // create a loop that  finds each new date
+    for (var i = 0; i<threeHourForecasts.length; i+=8) {
+        // getDate(threeHourForecasts[i].dt_txt, i);
+        // create a variable that holds this date
+        var dateArray = threeHourForecasts[i];
+        // console.log(dateArray);
+        // console.log(dateArray.dt_txt);
+        var theActualDate = dateArray.dt_txt;
+        // call getDate with this date and iteration value
+        getDate(theActualDate, i);
+    }
+}
+// <!--        -->
+
     </script>
 
 <!--============================================================-->
