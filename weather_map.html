@@ -51,9 +51,21 @@
     <!--5 Day Forecast Cards Starts here-->
         <div class="container-fluid">
             <div class="row p-2 d-flex justify-content-between">
-                    <div class="card2">
+                    <div id="card1">
 
                     </div>
+                <div id="card2">
+
+                </div>
+                <div id="card3">
+
+                </div>
+                <div id="card4">
+
+                </div>
+                <div id="card5">
+
+                </div>
                 <div>
                 <!--Day 1 Card-->
                 <div class="card">
@@ -163,11 +175,11 @@
             }).done(function(data) {
                 console.log('5 day forecast', data);
                 // makesDayCards(data);
-                getDates(data);
+                makeCard(data);
 
 
                 // ...
-            //    makeCard()
+            //    makeCard(humidity(data), maxTemp(data), minTemp(data))
             });
         //====================================================
 
@@ -240,21 +252,34 @@
         // function makesDayCards(data) {
             // extract the data for day 1 - 5 in a loop, at the end of each loop,
             // make a card, and post it to the correct day card
-        function makeCard(dateArr, maxTempArr, minTempArr, cloudArr) {
+        function makeCard(response) {
+            var dateArr = getDates(response);
+            var maxTempArr = getMaxTemp(response);
+            var minTempArr = getMinTemp(response);
+            var cloudArr = getCloudCond(response);
+            var maxHumidityArr = getHumidity(response);
+            var maxWind = getWind(response);
+            // var maxPressure = getPressure(response);
+
+            // dateArr, maxTempArr, minTempArr, cloudArr, maxHumidityArr
+            var dayCount = 0;
+            var selector = '';
             for (var i = 0; i < dateArr.length ; i++) {
-                var html = '<div className="card-header text-center date">' + dateArr[i] + '</div>';
-                html += '<ul className="list-group list-group-flush">';
-                    html += '<li className="list-group-item">' + maxTempArr + '</li>'; //max temp
-                    html += '<li className="list-group-item">' + minTempArr + '</li>'; //min temp
-                    html += '<li className="list-group-item">' + cloudArr +  '</li>'; // cloud cond
-                    html += '<li className="list-group-item">' + '</li>'; //humidity
-                    html += '<li className="list-group-item">' + '</li>'; //wind
-                    html += '<li className="list-group-item">' + '</li>'; //pressure
+                var html = '<div class="card">'
+                    html += '<div class="card-header text-center date">' + dateArr[i] + '</div>';
+                html += '<ul class="list-group list-group-flush">';
+                    html += '<li class="list-group-item">' + maxTempArr[i] + '</li>'; //max temp
+                    html += '<li class="list-group-item">' + minTempArr[i] + '</li>'; //min temp
+                    html += '<li class="list-group-item">' + cloudArr[i] +  '</li>'; // cloud cond
+                    html += '<li class="list-group-item">' + maxHumidityArr[i] + '</li>'; //humidity
+                    html += '<li class="list-group-item">' + maxWind[i] + '</li>'; //wind
+                    html += '<li class="list-group-item">' + '</li>'; //pressure
                 html += '</ul>';
+                html += '</div>';
+                dayCount++;
+                selector = '#card' + dayCount;
+                $(selector).html(html);
             };
-
-            $('.card2').html(html);
-
         };
 
         function getMaxTemp(data) {
@@ -301,6 +326,7 @@
             return cloudArr;
         };
 
+
         // create a loop that runs 5 times once for each card, and tracks a day counter
                 //
             // nest and create a loop that runs 8 times, once for each time period
@@ -313,6 +339,47 @@
             // manipulate the cloud conditions
                 // extract the humidity
             // manipulate the humidity
+        function getHumidity(data) {
+            var humidityArr = [];
+            var maxHumidityArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 0; i < threeHourForecasts.length; i++) {
+                var humidityForecast = threeHourForecasts[i].main.humidity;
+                humidityArr.push(humidityForecast);
+            }
+            var day1 = humidityArr.splice(0, 7);
+            maxHumidityArr.push(Math.max(day1));
+            var day2 = humidityArr.splice(8, 15);
+            maxHumidityArr.push(Math.max(day2));
+            var day3 = humidityArr.splice(16, 23);
+            maxHumidityArr.push(Math.max(day3));
+            var day4 = humidityArr.splice(24, 31);
+            maxHumidityArr.push(Math.max(day4));
+            var day5 = humidityArr.splice(32, 39);
+            maxHumidityArr.push(Math.max(day5));
+            return maxHumidityArr;
+        };
+
+        function getWind(data) {
+            var windArr = [];
+            var maxWindArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 0; i < threeHourForecasts.length; i++) {
+                var windForecast = threeHourForecasts[i].wind.speed;
+                windArr.push(windForecast);
+            }
+            var day1 = windArr.splice(0, 7);
+            maxWindArr.push(Math.max(day1));
+            var day2 = windArr.splice(8, 15);
+            maxWindArr.push(Math.max(day2));
+            var day3 = windArr.splice(16, 23);
+            maxWindArr.push(Math.max(day3));
+            var day4 = windArr.splice(24, 31);
+            maxWindArr.push(Math.max(day4));
+            var day5 = windArr.splice(32, 39);
+            maxWindArr.push(Math.max(day5));
+            return maxWindArr;
+        };
                 // extract the wind
             // manipulate the wind
                 // extract the pressure
