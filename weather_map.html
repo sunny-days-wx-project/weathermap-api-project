@@ -107,79 +107,76 @@
     <!--Map Viewport Starts Here-->
     <div class="container-fluid">
         <div class="row d-flex justify-content-center py-2">
-            <div id='map' class="m-auto"></div>
+            <div id='map' class="m-auto w-75"></div>
         </div>
     </div>
+     /
+    <!-- jQuery/AJAX library addition (need AJAX to run AJAX)-->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
     <!-- Mapbox JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
 
-    <!-- AJAX library addition (need AJAX to run AJAX)-->
-    <script src="/Users/derekberkley/IdeaProjects/weathermap-api-project/jquery-2.2.4.js"></script>
-
     <!-- link to the JS file for API key to be held separately-->
     <!--    <script src = "../IdeaProjects/weathermap-api-project/keys.js">-->
-
-    <!--jQuery Library follows (always at the end of the body, but before Bootstrap)-->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
     <!--Bootstrap Library follows-->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script>
-        const openWeatherMapAPIkey = "feafd6977e777352873ac6e055014150";
-        //====================================================
-        // Query for CURRENT wx in SATX w/ ajax GET request
-        // Console logged the response with .done() method to view data
-        $.get("http://api.openweathermap.org/data/2.5/weather", {
-            APPID: openWeatherMapAPIkey,
-            q:     "San Antonio, US",
-            units: "imperial"
-        }).done(function(data) {
-            console.log("current", data);
-        });
+
+        //=======JS for Rendering Map on Page=================
+            mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmEtY29kZXVwIiwiYSI6ImNrcHJjczFyYTBtMHIyb2xlNDBsanlva2EifQ.rXUs9LI80u-fy9wz-bG0Qw';
+            let map = new mapboxgl.Map({
+                container: 'map', // container ID
+                style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                center: [-98, 30], // starting position [lng, lat]
+                zoom: 9 // starting zoom
+            });
         //====================================================
 
-        //====================================================
-        // Query for FORECASTED wx in SATX w/ ajax GET request
-        $.get("http://api.openweathermap.org/data/2.5/forecast", {
-            APPID: openWeatherMapAPIkey,
-            q:     "San Antonio, US", //also able to use lat/lon or cityID from database file
-            units: "imperial"
-        }).done(function(data) {
-            console.log('5 day forecast', data);
-            getDates(data);
-        });
-        //====================================================
+        // Open Weather Map website API Key for data pulls
+            const openWeatherMapAPIkey = "feafd6977e777352873ac6e055014150";
 
-        //====================================================
-        // 'One Call API' is a single request for 'all essential weather data' in SATX
-        $.get("http://api.openweathermap.org/data/2.5/onecall", {
-            APPID: openWeatherMapAPIkey,
-            lat:    29.423017,
-            lon:   -98.48527,
-            units: "imperial"
-        }).done(function(data) {
-            console.log('The entire response:', data);
-            console.log('Diving in - here is current information: ', data.current);
-            console.log('A step further - information for tomorrow: ', data.daily[1]);
-
-        });
-
-
+        //=======GET Request for CURRENT WX in SATX=====================
+            // // Console logged the response with .done() method to view data
+            // // $.get("http://api.openweathermap.org/data/2.5/weather", {
+            //     APPID: openWeatherMapAPIkey,
+            //     q:     "San Antonio, US",
+            //     units: "imperial"
+            // }).done(function(data) {
+            //     console.log("current", data);
+            // });
         //====================================================
 
-        mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmEtY29kZXVwIiwiYSI6ImNrcHJjczFyYTBtMHIyb2xlNDBsanlva2EifQ.rXUs9LI80u-fy9wz-bG0Qw';
+        //=======GET Request for FORECASTED WX in SATX=======
+            $.get("http://api.openweathermap.org/data/2.5/forecast", {
+                APPID: openWeatherMapAPIkey,
+                q:     "San Antonio, US", //also able to use lat/lon or cityID from database file
+                units: "imperial"
+            }).done(function(data) {
+                console.log('5 day forecast', data);
+                getDates(data);
+            });
+        //====================================================
 
-         let map = new mapboxgl.Map({
-            container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [-98, 30], // starting position [lng, lat]
-            zoom: 9 // starting zoom
-        });
+        //======='One Call API' Request for All Essential WX in SATX=======
+            // $.get("http://api.openweathermap.org/data/2.5/onecall", {
+            //     APPID: openWeatherMapAPIkey,
+            //     lat:    29.423017,
+            //     lon:   -98.48527,
+            //     units: "imperial"
+            // }).done(function(data) {
+            //     console.log('The entire response:', data);
+            //     console.log('Diving in - here is current information: ', data.current);
+            //     console.log('A step further - information for tomorrow: ', data.daily[1]);
+            // });
+        //====================================================
+
     </script>
+
     <script>
 // <!--        write a function that takes the date from the data and separates the date only and returns -->
 // $.get("http://api.openweathermap.org/data/2.5/onecall", {
@@ -226,36 +223,38 @@
 //  then calls getEachMax(maxTemp, day)
 
 // =================================================
+ </script> <!--Pseudo-code-->
 
-// <!--        assign the date from the array to a variable-->
-function getDate(someData, i) {
-    // gets list zero and assigns the date-time to a variable
-    // var dateTime = someData
-    // create a substring that contains just the date
-    var date = someData.substring(0, 10);
-    console.log(i);
-    console.log(date);
-    // put the date into an html package and assign it to the inner html of the card element
-    // create a variable to hold an element that best communicates a date for our purposes i.e. <em>
-    // jquery the 'featured' div by ID  by concatenating the iteration / 8 + 1 number stored in a num variable to the end of $('#date'+num).html(dateVariable);
-
-}
-
-function getDates(OGDateArray) {
-    // assign original weather object 3 hour forecasts to a variable
-    var threeHourForecasts = OGDateArray.list;
-    // create a loop that  finds each new date
-    for (var i = 0; i<threeHourForecasts.length; i+=8) {
-        // getDate(threeHourForecasts[i].dt_txt, i);
-        // create a variable that holds this date
-        var dateArray = threeHourForecasts[i];
-        // console.log(dateArray);
-        // console.log(dateArray.dt_txt);
-        var theActualDate = dateArray.dt_txt;
-        // call getDate with this date and iteration value
-        getDate(theActualDate, i);
+    <script>
+    <!--assign the date from the array to a variable-->
+    function getDate(someData, i) {
+        // gets list zero and assigns the date-time to a variable
+        // var dateTime = someData
+        // create a substring that contains just the date
+        var date = someData.substring(0, 10);
+        console.log(i);
+        console.log(date);
+        // put the date into an html package and assign it to the inner html of the card element
+        // create a variable to hold an element that best communicates a date for our purposes i.e. <em>
+        // jquery the 'featured' div by ID  by concatenating the iteration / 8 + 1 number stored in a num variable to the end of $('#date'+num).html(dateVariable);
     }
-}
+
+    function getDates(OGDateArray) {
+        // assign original weather object 3 hour forecasts to a variable
+        var threeHourForecasts = OGDateArray.list;
+        // create a loop that  finds each new date
+        for (var i = 0; i<threeHourForecasts.length; i+=8) {
+            // getDate(threeHourForecasts[i].dt_txt, i);
+            // create a variable that holds this date
+            var dateArray = threeHourForecasts[i];
+            // console.log(dateArray);
+            // console.log(dateArray.dt_txt);
+            var theActualDate = dateArray.dt_txt;
+            // call getDate with this date and iteration value
+            getDate(theActualDate, i);
+        }
+    }
+
 
     </script>
 
