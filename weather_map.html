@@ -158,7 +158,12 @@
                 units: "imperial"
             }).done(function(data) {
                 console.log('5 day forecast', data);
+                // makesDayCards(data);
                 getDates(data);
+
+
+                // ...
+            //    makeCard()
             });
         //====================================================
 
@@ -225,16 +230,119 @@
  </script> <!--Pseudo-code-->
 
     <script>
+        // write a function that takes in the data, runs 5 days worth of data 1 day at a time, and produces and injects
+        // a 'day' card for each of the 5 day cards
+        // ========================================
+        // function makesDayCards(data) {
+            // extract the data for day 1 - 5 in a loop, at the end of each loop,
+            // make a card, and post it to the correct day card
+            //
+        // create a loop that runs 5 times once for each card, and tracks a day counter
+                //
+            // nest and create a loop that runs 8 times, once for each time period
+
+                // extract the max temps function(data){
+            // manipulate the max temps
+                // extract the min temps
+            // manipulate the min temps
+                // extract the cloud conditions
+            // manipulate the cloud conditions
+                // extract the humidity
+            // manipulate the humidity
+                // extract the wind
+            // manipulate the wind
+                // extract the pressure
+            // manipulate the pressure
+            //
+            // make the day 'card'
+                // send the card to the HTML including the count/day number
+                //  in the $(selector) by first appending it to a variable
+                //...
+                //  similar to before
+                //...
+                // var callMe = '#date' + count;
+                // $(callMe).html(card);
+            //
+            // count the card with a counter
+            // repeat until the count reaches 5
+        //
+        // }
+        // ========================================
+
+
+        // function makeCard(maxTemp, minTemp)
+        // var card = '<div className="card">';
+        //     card += '<div className="card-header text-center" id="date1">' Featured</div>
+        //     <ul className="list-group list-group-flush">
+        //         <li className="list-group-item">Cras justo odio</li>
+        //         <li className="list-group-item">Dapibus ac facilisis in</li>
+        //         <li className="list-group-item">Vestibulum at eros</li>
+        //     </ul>
+        // </div> <!--End of day's forecast card-->
+
+
+
+        //  write a function called getEachMax(maxArr, day) for 8 3-hr sets of list objects returns the Max temp yielding the max temp
+        // function getEachMax(maxArr, minArr, day) {
+        //     var arrLen=maxArr.length-1;
+        //     var max = maxArr.sort()[arrLen];
+        //     // var callMe = '#date' + day;
+        //     // $(callMe).html(date);
+        //     var min = minArr.sort()[0];
+        //     var tempArray = [maxArr, minArr];
+        //     return tempArray;
+        // }
+
+        // function eachDayTempsLoop(OGDateArray) {
+        //
+        //     return dailyEightTemps;
+        // }
+        // var threeHourForecasts = OGDateArray.list;
+        // function getTemps(OGDateArray) {
+        //     var count = 0;
+        //     // assign original weather object 3 hour forecasts to a variable
+        //     // var threeHourForecasts = OGDateArray.list;
+        //     // create a loop that  finds each new date
+        //
+        //     for (var i = 0; count<1; i++) {
+        //
+        //         // getDate(threeHourForecasts[i].dt_txt, i);
+        //         // create a variable that holds this date;
+        //
+        //         // console.log(dateArray);
+        //         // console.log(dateArray.dt_txt);
+        //         var theActualTemp = threeHourForecasts.temp_max;
+        //         // call getDate with this date and iteration value
+        //         count += .125;
+        //     }
+        //         getEachMax(max, min, count);
+        //
+        //     for (var i = 0; count<2; i++) {
+        //     }
+        // ===================================================
+        // function
+
+        // getEachMax(maxArr) {
+        //  forecast for a 24 hr period then jQuery the result into the correct card using the same $('#maxTemp'+num).html(maxTemp);
+
+        //  write a function called getMax(OGdata) which takes in the original 5 day forecast object, loops through 8 3-hour
+        //  periods, and stores the max temp in an array while using an if condition that executes for i===0, checks if i%8=0 and
+        //  if i%8 === 0, assigns to var 'day' the value of i/8+1 to reflect which day the max temp is for
+        //
+        //  when the i reaches (i%8 === 0) ...
+        //  then calls getEachMax(maxTemp, day)
+
+
     <!--assign the date from the array to a variable-->
-    function getDate(someData, i, count) {
+    function getDate(someData, count) {
         // gets list zero and assigns the date-time to a variable
         // var dateTime = someData
         // create a substring that contains just the date
         var date = someData.substring(0, 10);
-        console.log(i);
-        console.log(date);
+        // console.log(i);
+        // console.log(date);
         // put the date into an html package and assign it to the inner html of the card element
-        var callMe = '#date' + count;
+        var callMe = '#' + 'date' + count;
         $(callMe).html(date);
         // create a variable to hold an element that best communicates a date for our purposes i.e. <em>
         // jquery the 'featured' div by ID  by concatenating the iteration / 8 + 1 number stored in a num variable to the end of $('#date'+num).html(dateVariable);
@@ -254,7 +362,7 @@
             var theActualDate = dateArray.dt_txt;
             // call getDate with this date and iteration value
             count += 1;
-            getDate(theActualDate, i, count);
+            getDate(theActualDate, count);
         }
     }
 
