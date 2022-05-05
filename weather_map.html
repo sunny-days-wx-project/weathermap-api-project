@@ -51,7 +51,10 @@
     <!--5 Day Forecast Cards Starts here-->
         <div class="container-fluid">
             <div class="row p-2 d-flex justify-content-between">
+                    <div class="card2">
 
+                    </div>
+                <div>
                 <!--Day 1 Card-->
                 <div class="card">
                     <div class="card-header text-center" id="date1">Featured</div>
@@ -101,6 +104,7 @@
                         <li class="list-group-item">Vestibulum at eros</li>
                     </ul>
                 </div> <!--End of day's forecast card-->
+            </div> <!--Old Cards-->
             </div>
         </div>
 
@@ -236,7 +240,67 @@
         // function makesDayCards(data) {
             // extract the data for day 1 - 5 in a loop, at the end of each loop,
             // make a card, and post it to the correct day card
-            //
+        function makeCard(dateArr, maxTempArr, minTempArr, cloudArr) {
+            for (var i = 0; i < dateArr.length ; i++) {
+                var html = '<div className="card-header text-center date">' + dateArr[i] + '</div>';
+                html += '<ul className="list-group list-group-flush">';
+                    html += '<li className="list-group-item">' + maxTempArr + '</li>'; //max temp
+                    html += '<li className="list-group-item">' + minTempArr + '</li>'; //min temp
+                    html += '<li className="list-group-item">' + cloudArr +  '</li>'; // cloud cond
+                    html += '<li className="list-group-item">' + '</li>'; //humidity
+                    html += '<li className="list-group-item">' + '</li>'; //wind
+                    html += '<li className="list-group-item">' + '</li>'; //pressure
+                html += '</ul>';
+            };
+
+            $('.card2').html(html);
+
+        };
+
+        function getMaxTemp(data) {
+            var maxTempArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 0; i<threeHourForecasts.length; i+=8) {
+                var tempForecast = threeHourForecasts[i];
+                var maxTemp = tempForecast.main.temp_max;
+                maxTempArr.push(maxTemp);
+            }
+            return maxTempArr;
+        };
+
+        function getMinTemp(data) {
+            var minTempArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 0; i < threeHourForecasts.length; i+=8) {
+                var tempForecast = threeHourForecasts[i];
+                var minTemp = tempForecast.main.temp_min;
+                minTempArr.push(minTemp);
+            }
+            return minTempArr;
+        };
+
+        function getCloudCond(data) {
+            var cloudArr = [];
+            var cloudPrint;
+            var threeHourForecasts = data.list; //array of 40 objects
+            for (var i = 4; i < threeHourForecasts.length; i+=8) { //loop through all 40
+                var cloudForecast = threeHourForecasts[i]; //this is a single forecast
+                var cloudCover = cloudForecast.clouds.all; //drill down to get cloud forecast
+                    if (cloudCover >= 75) {
+                        cloudPrint = 'overcast';
+                        return cloudPrint;
+                    } else if (25 < cloudCover < 75) {
+                        cloudPrint = 'partly cloudy';
+                        return cloudPrint
+                    } else {
+                        cloudPrint = 'clear skies';
+                        return cloudPrint;
+                    }
+                cloudArr.push(cloudPrint);
+            }
+            return cloudArr;
+        };
+
         // create a loop that runs 5 times once for each card, and tracks a day counter
                 //
             // nest and create a loop that runs 8 times, once for each time period
@@ -268,18 +332,6 @@
         //
         // }
         // ========================================
-
-
-        // function makeCard(maxTemp, minTemp)
-        // var card = '<div className="card">';
-        //     card += '<div className="card-header text-center" id="date1">' Featured</div>
-        //     <ul className="list-group list-group-flush">
-        //         <li className="list-group-item">Cras justo odio</li>
-        //         <li className="list-group-item">Dapibus ac facilisis in</li>
-        //         <li className="list-group-item">Vestibulum at eros</li>
-        //     </ul>
-        // </div> <!--End of day's forecast card-->
-
 
 
         //  write a function called getEachMax(maxArr, day) for 8 3-hr sets of list objects returns the Max temp yielding the max temp
@@ -334,22 +386,24 @@
 
 
     <!--assign the date from the array to a variable-->
-    function getDate(someData, count) {
-        // gets list zero and assigns the date-time to a variable
-        // var dateTime = someData
-        // create a substring that contains just the date
-        var date = someData.substring(0, 10);
-        // console.log(i);
-        // console.log(date);
-        // put the date into an html package and assign it to the inner html of the card element
-        var callMe = '#' + 'date' + count;
-        $(callMe).html(date);
-        // create a variable to hold an element that best communicates a date for our purposes i.e. <em>
-        // jquery the 'featured' div by ID  by concatenating the iteration / 8 + 1 number stored in a num variable to the end of $('#date'+num).html(dateVariable);
-    }
+    // function getDate(someData, count) {
+    //     // gets list zero and assigns the date-time to a variable
+    //     // var dateTime = someData
+    //     // create a substring that contains just the date
+    //     var date = someData.substring(0, 10);
+    //     // console.log(i);
+    //     // console.log(date);
+    //     // put the date into an html package and assign it to the inner html of the card element
+    //     // var callMe = '#' + 'date' + count;
+    //     // $(callMe).html(date);
+    //     return date;
+    //     // create a variable to hold an element that best communicates a date for our purposes i.e. <em>
+    //     // jquery the 'featured' div by ID  by concatenating the iteration / 8 + 1 number stored in a num variable to the end of $('#date'+num).html(dateVariable);
+    // }
 
     function getDates(OGDateArray) {
-        var count = 0;
+        // var count = 0;
+        var dateArr = [];
         // assign original weather object 3 hour forecasts to a variable
         var threeHourForecasts = OGDateArray.list;
         // create a loop that  finds each new date
@@ -361,9 +415,11 @@
             // console.log(dateArray.dt_txt);
             var theActualDate = dateArray.dt_txt;
             // call getDate with this date and iteration value
-            count += 1;
-            getDate(theActualDate, count);
+            // count += 1;
+            var date = theActualDate.substring(0, 10);
+            dateArr.push(date);
         }
+        return dateArr;
     }
 
 
