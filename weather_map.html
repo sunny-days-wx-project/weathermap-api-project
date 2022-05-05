@@ -159,6 +159,11 @@
             }).done(function(data) {
                 console.log('5 day forecast', data);
                 getDates(data);
+                // getEachMax(data);
+
+
+                // ...
+            //    makeCard()
             });
         //====================================================
 
@@ -225,14 +230,49 @@
  </script> <!--Pseudo-code-->
 
     <script>
+
+
+
+        function makeCard(maxTemp, minTemp)
+        var card = '<div className="card">';
+            card += '<div className="card-header text-center" id="date1">' Featured</div>
+            <ul className="list-group list-group-flush">
+                <li className="list-group-item">Cras justo odio</li>
+                <li className="list-group-item">Dapibus ac facilisis in</li>
+                <li className="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div> <!--End of day's forecast card-->
+
+
+
+        //  write a function called getEachMax(maxArr, day) for 8 3-hr sets of list objects returns the Max temp yielding the max temp
+        function getEachMax(maxArr, minArr, day) {
+            var max = maxArr.sort((a, b) => a - b);
+            var callMe = '#date' + count;
+            $(callMe).html(date);
+
+
+
+        }
+        // getEachMax(maxArr) {
+        //  forecast for a 24 hr period then jQuery the result into the correct card using the same $('#maxTemp'+num).html(maxTemp);
+
+        //  write a function called getMax(OGdata) which takes in the original 5 day forecast object, loops through 8 3-hour
+        //  periods, and stores the max temp in an array while using an if condition that executes for i===0, checks if i%8=0 and
+        //  if i%8 === 0, assigns to var 'day' the value of i/8+1 to reflect which day the max temp is for
+        //
+        //  when the i reaches (i%8 === 0) ...
+        //  then calls getEachMax(maxTemp, day)
+
+
     <!--assign the date from the array to a variable-->
     function getDate(someData, i, count) {
         // gets list zero and assigns the date-time to a variable
         // var dateTime = someData
         // create a substring that contains just the date
         var date = someData.substring(0, 10);
-        console.log(i);
-        console.log(date);
+        // console.log(i);
+        // console.log(date);
         // put the date into an html package and assign it to the inner html of the card element
         var callMe = '#date' + count;
         $(callMe).html(date);
