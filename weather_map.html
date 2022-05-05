@@ -50,79 +50,19 @@
 
     <!--5 Day Forecast Cards Starts here-->
         <div class="container-fluid">
-            <div class="row p-2 d-flex justify-content-between">
-                    <div id="card1">
-
-                    </div>
-                <div id="card2">
-
+                <div class="row p-2 d-flex justify-content-center">
+                    <div id="card1"></div>
+                    <div id="card2"></div>
+                    <div id="card3"></div>
+                    <div id="card4"></div>
+                    <div id="card5"></div>
                 </div>
-                <div id="card3">
-
-                </div>
-                <div id="card4">
-
-                </div>
-                <div id="card5">
-
-                </div>
-                <div>
-                <!--Day 1 Card-->
-                <div class="card">
-                    <div class="card-header text-center" id="date1">Featured</div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div> <!--End of day's forecast card-->
-
-                <!--Day 2 Card-->
-                <div class="card">
-                    <div class="card-header text-center" id="date2">Featured</div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div> <!--End of day's forecast card-->
-
-                <!--Day 3 Card-->
-                <div class="card">
-                    <div class="card-header text-center" id="date3">Featured</div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div> <!--End of day's forecast card-->
-
-                <!--Day 4 Card-->
-                <div class="card">
-                    <div class="card-header text-center" id="date4">Featured</div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div> <!--End of day's forecast card-->
-
-                <!--Day 5 Card-->
-                <div class="card">
-                    <div class="card-header text-center" id="date5">Featured</div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div> <!--End of day's forecast card-->
             </div> <!--Old Cards-->
-            </div>
-        </div>
+
 
     <!--Map Viewport Starts Here-->
-    <div class="container-fluid">
-        <div class="row d-flex justify-content-center py-2">
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="row d-flex justify-content-center py-2 w-75">
             <div id='map' class="m-auto w-75"></div>
         </div>
     </div>
@@ -259,21 +199,23 @@
             var cloudArr = getCloudCond(response);
             var maxHumidityArr = getHumidity(response);
             var maxWind = getWind(response);
+            var wxIconArr = getWeatherIcon(response);
+            var wxDescArr = getWeatherDesc(response)
             // var maxPressure = getPressure(response);
 
             // dateArr, maxTempArr, minTempArr, cloudArr, maxHumidityArr
             var dayCount = 0;
             var selector = '';
             for (var i = 0; i < dateArr.length ; i++) {
-                var html = '<div class="card">'
+                var html = '<div class="card mx-4">'
                     html += '<div class="card-header text-center date">' + dateArr[i] + '</div>';
-                html += '<ul class="list-group list-group-flush">';
-                    html += '<li class="list-group-item">' + maxTempArr[i] + '</li>'; //max temp
-                    html += '<li class="list-group-item">' + minTempArr[i] + '</li>'; //min temp
-                    html += '<li class="list-group-item">' + cloudArr[i] +  '</li>'; // cloud cond
-                    html += '<li class="list-group-item">' + maxHumidityArr[i] + '</li>'; //humidity
-                    html += '<li class="list-group-item">' + maxWind[i] + '</li>'; //wind
-                    html += '<li class="list-group-item">' + '</li>'; //pressure
+                    html += '<ul class="list-group list-group-flush">';
+                    html += '<li class="list-group-item d-flex justify-content-column"><div>' + maxTempArr[i]+ 'F / ' + minTempArr[i] + 'F ' + '</div><img src="http://openweathermap.org/img/w/' + wxIconArr[i] +'.png"></li>'; //max temp
+                    html += '<li class="list-group-item text-center">' + wxDescArr[i] +  '</li>'; // cloud cond
+                    html += '<li class="list-group-item text-center">' + cloudArr[i] +  '</li>'; // cloud cond
+                    html += '<li class="list-group-item text-center">' + 'Humidity: ' + maxHumidityArr[i] + '</li>'; //humidity
+                    html += '<li class="list-group-item text-center">' + 'Wind: ' + maxWind[i] + '</li>'; //wind
+                    html += '<li class="list-group-item text-center">' + 'Pressure: ' + '</li>'; //pressure
                 html += '</ul>';
                 html += '</div>';
                 dayCount++;
@@ -304,6 +246,30 @@
             return minTempArr;
         };
 
+        function getWeatherIcon(data) {
+            var wxIconArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 4; i < threeHourForecasts.length; i+=8) {
+                var wxForecast = threeHourForecasts[i]; //this is a single forecast
+                var wxReport = wxForecast.weather[0];
+                var wxIcon = wxReport.icon;
+                wxIconArr.push(wxIcon);
+            }
+            return wxIconArr;
+        }
+
+        function getWeatherDesc(data) {
+            var wxDescArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 4; i < threeHourForecasts.length; i+=8) {
+                var wxForecast = threeHourForecasts[i]; //this is a single forecast
+                var wxReport = wxForecast.weather[0];
+                var wxDescription = wxReport.description;
+                wxDescArr.push(wxDescription);
+            }
+            return wxDescArr;
+        }
+
         function getCloudCond(data) {
             var cloudArr = [];
             var cloudPrint;
@@ -313,15 +279,14 @@
                 var cloudCover = cloudForecast.clouds.all; //drill down to get cloud forecast
                     if (cloudCover >= 75) {
                         cloudPrint = 'overcast';
-                        return cloudPrint;
+                        cloudArr.push(cloudPrint);
                     } else if (25 < cloudCover < 75) {
                         cloudPrint = 'partly cloudy';
-                        return cloudPrint
+                        cloudArr.push(cloudPrint);
                     } else {
                         cloudPrint = 'clear skies';
-                        return cloudPrint;
+                        cloudArr.push(cloudPrint);
                     }
-                cloudArr.push(cloudPrint);
             }
             return cloudArr;
         };
@@ -344,19 +309,21 @@
             var maxHumidityArr = [];
             var threeHourForecasts = data.list;
             for (var i = 0; i < threeHourForecasts.length; i++) {
-                var humidityForecast = threeHourForecasts[i].main.humidity;
-                humidityArr.push(humidityForecast);
+                var humidityForecast = threeHourForecasts[i];
+                var final = humidityForecast.main.humidity;
+                humidityArr.push(final);
+
             }
-            var day1 = humidityArr.splice(0, 7);
-            maxHumidityArr.push(Math.max(day1));
-            var day2 = humidityArr.splice(8, 15);
-            maxHumidityArr.push(Math.max(day2));
-            var day3 = humidityArr.splice(16, 23);
-            maxHumidityArr.push(Math.max(day3));
-            var day4 = humidityArr.splice(24, 31);
-            maxHumidityArr.push(Math.max(day4));
-            var day5 = humidityArr.splice(32, 39);
-            maxHumidityArr.push(Math.max(day5));
+            var day1 = humidityArr.slice(0, 8).sort()[7];
+            maxHumidityArr.push(day1);
+            var day2 = humidityArr.slice(8, 16).sort()[7];
+            maxHumidityArr.push(day2);
+            var day3 = humidityArr.slice(16, 24).sort()[7];
+            maxHumidityArr.push(day3);
+            var day4 = humidityArr.slice(24, 32).sort()[7];
+            maxHumidityArr.push(day4);
+            var day5 = humidityArr.slice(32, 40).sort()[7];
+            maxHumidityArr.push(day5);
             return maxHumidityArr;
         };
 
@@ -368,16 +335,16 @@
                 var windForecast = threeHourForecasts[i].wind.speed;
                 windArr.push(windForecast);
             }
-            var day1 = windArr.splice(0, 7);
-            maxWindArr.push(Math.max(day1));
-            var day2 = windArr.splice(8, 15);
-            maxWindArr.push(Math.max(day2));
-            var day3 = windArr.splice(16, 23);
-            maxWindArr.push(Math.max(day3));
-            var day4 = windArr.splice(24, 31);
-            maxWindArr.push(Math.max(day4));
-            var day5 = windArr.splice(32, 39);
-            maxWindArr.push(Math.max(day5));
+            var day1 = windArr.slice(0, 8).sort()[7];
+            maxWindArr.push(day1);
+            var day2 = windArr.slice(8, 16).sort()[7];
+            maxWindArr.push(day2);
+            var day3 = windArr.slice(16, 24).sort()[7];
+            maxWindArr.push(day3);
+            var day4 = windArr.slice(24, 32).sort()[7];
+            maxWindArr.push(day4);
+            var day5 = windArr.slice(32, 40).sort()[7];
+            maxWindArr.push(day5);
             return maxWindArr;
         };
                 // extract the wind
