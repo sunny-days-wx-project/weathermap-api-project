@@ -54,7 +54,7 @@
 
                 <!--Day 1 Card-->
                 <div class="card">
-                    <div class="card-header" id="date1">Featured</div>
+                    <div class="card-header text-center" id="date1">Featured</div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Cras justo odio</li>
                         <li class="list-group-item">Dapibus ac facilisis in</li>
@@ -64,7 +64,7 @@
 
                 <!--Day 2 Card-->
                 <div class="card">
-                    <div class="card-header" id="date2">Featured</div>
+                    <div class="card-header text-center" id="date2">Featured</div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Cras justo odio</li>
                         <li class="list-group-item">Dapibus ac facilisis in</li>
@@ -74,7 +74,7 @@
 
                 <!--Day 3 Card-->
                 <div class="card">
-                    <div class="card-header" id="date3">Featured</div>
+                    <div class="card-header text-center" id="date3">Featured</div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Cras justo odio</li>
                         <li class="list-group-item">Dapibus ac facilisis in</li>
@@ -84,7 +84,7 @@
 
                 <!--Day 4 Card-->
                 <div class="card">
-                    <div class="card-header" id="date4">Featured</div>
+                    <div class="card-header text-center" id="date4">Featured</div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Cras justo odio</li>
                         <li class="list-group-item">Dapibus ac facilisis in</li>
@@ -94,7 +94,7 @@
 
                 <!--Day 5 Card-->
                 <div class="card">
-                    <div class="card-header" id="date5">Featured</div>
+                    <div class="card-header text-center" id="date5">Featured</div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Cras justo odio</li>
                         <li class="list-group-item">Dapibus ac facilisis in</li>
@@ -174,7 +174,6 @@
             //     console.log('A step further - information for tomorrow: ', data.daily[1]);
             // });
         //====================================================
-
     </script>
 
     <script>
@@ -195,7 +194,7 @@
 //  write a function called getEachMax(maxArr, day) for 8 3-hr sets of list objects returns the Max temp yielding the max temp
 
 // getEachMax(maxArr) {
-//  forecast for a 24 hr period then jquerys the result into the correct card using the same $('#maxTemp'+num).html(maxTemp);
+//  forecast for a 24 hr period then jQuery the result into the correct card using the same $('#maxTemp'+num).html(maxTemp);
 
 //  write a function called getMax(OGdata) which takes in the original 5 day forecast object, loops through 8 3-hour
 //  periods, and stores the max temp in an array while using an if condition that executes for i===0, checks if i%8=0 and
@@ -227,7 +226,7 @@
 
     <script>
     <!--assign the date from the array to a variable-->
-    function getDate(someData, i) {
+    function getDate(someData, i, count) {
         // gets list zero and assigns the date-time to a variable
         // var dateTime = someData
         // create a substring that contains just the date
@@ -235,11 +234,14 @@
         console.log(i);
         console.log(date);
         // put the date into an html package and assign it to the inner html of the card element
+        var callMe = '#date' + count;
+        $(callMe).html(date);
         // create a variable to hold an element that best communicates a date for our purposes i.e. <em>
         // jquery the 'featured' div by ID  by concatenating the iteration / 8 + 1 number stored in a num variable to the end of $('#date'+num).html(dateVariable);
     }
 
     function getDates(OGDateArray) {
+        var count = 0;
         // assign original weather object 3 hour forecasts to a variable
         var threeHourForecasts = OGDateArray.list;
         // create a loop that  finds each new date
@@ -251,7 +253,8 @@
             // console.log(dateArray.dt_txt);
             var theActualDate = dateArray.dt_txt;
             // call getDate with this date and iteration value
-            getDate(theActualDate, i);
+            count += 1;
+            getDate(theActualDate, i, count);
         }
     }
 
