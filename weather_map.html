@@ -41,8 +41,8 @@
             <div class="row p-2" id="row-form">
                 <div class="col-8"></div>
                 <form class="col-4 form-inline m-0 py-3 justify-content-end">
-                    <input type="test" class="form-control mx-2 w-75" id="location" placeholder="City, State">
-                    <button type="submit" class="btn btn-primary mx-2">Find</button>
+                    <input type="text" class="form-control mx-2 w-75" id="location" placeholder="City, State">
+                    <button type="submit" id="submit" class="btn btn-primary mx-2">Find</button>
                 </form>
             </div> <!--End of row-form div-->
         </div> <!--End of this container-->
@@ -185,7 +185,7 @@
  </script> <!--Pseudo-code-->
     <!--// map marker and longlat box from mapbox api doc  https://docs.mapbox.com/mapbox-gl-js/example/drag-a-marker/-->
 
-    <pre id="coordinates" className="coordinates"></pre>
+    <pre id="coordinates" class="coordinates"></pre>
     <script>
         // write a function that takes in the data, runs 5 days worth of data 1 day at a time, and produces and injects
         // a 'day' card for each of the 5 day cards
@@ -487,9 +487,9 @@
  // <input type="test" className="form-control mx-2 w-75" id="location" placeholder="City, State">
  // <button type="submit" className="btn btn-primary mx-2">Find</button>
 
-    $('button').click(function() {
+    $('#submit').click(function() {
         // e.preventDefault();
-        var userLocation = $('#location').val();
+        var userLocation = $('input').value;
         console.log(userLocation);
         geocode(userLocation, mapboxToken);
     }());
