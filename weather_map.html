@@ -20,7 +20,7 @@
     }
     #map {
         border: 2px solid black;
-        width: 800px;
+        width: 1200px;
         height: 600px;
         box-shadow: 1px 1px;
     }
@@ -29,8 +29,8 @@
 </head>
 <body>
     <!--Header Starts Here-->
-        <div class="container-fluid">
-            <div class="row" id="row-header">
+        <div class="container-fluid ">
+            <div class="row pt-3 pb-2" id="row-header">
                 <div class="col-8  d-flex align-items-center mb-0"><h1 class="mb-0">Weather App</h1></div>
                 <div class="col-4 d-flex align-items-center justify-content-end"><p class="mb-0">Current City: San Antonio</p></div>
             </div> <!--End of row-header-->
@@ -38,32 +38,31 @@
 
     <!--Search Bar starts here-->
         <div class="container-fluid">
-            <div class="row d-flex align-items-center" id="row-form">
-            <form class="form-inline m-0 py-3">
-
-                    <input type="test" class="form-control mx-2" id="location" placeholder="City, State">
-
-                <button type="submit" class="btn btn-primary ml-2">Find</button>
-            </form>
+            <div class="row p-2" id="row-form">
+                <div class="col-8"></div>
+                <form class="col-4 form-inline m-0 py-3 justify-content-end">
+                    <input type="test" class="form-control mx-2 w-75" id="location" placeholder="City, State">
+                    <button type="submit" class="btn btn-primary mx-2">Find</button>
+                </form>
             </div> <!--End of row-form div-->
         </div> <!--End of this container-->
 
     <!--5 Day Forecast Cards Starts here-->
         <div class="container-fluid">
-                <div class="row p-2 d-flex justify-content-center">
-                    <div id="card1"></div>
-                    <div id="card2"></div>
-                    <div id="card3"></div>
-                    <div id="card4"></div>
-                    <div id="card5"></div>
+                <div class="row p-2">
+                    <div class="col p-0 mx-1" id="card1"></div>
+                    <div class="col p-0 mx-1" id="card2"></div>
+                    <div class="col p-0 mx-1" id="card3"></div>
+                    <div class="col p-0 mx-1" id="card4"></div>
+                    <div class="col p-0 mx-1" id="card5"></div>
                 </div>
             </div> <!--Old Cards-->
 
 
     <!--Map Viewport Starts Here-->
-    <div class="container-fluid d-flex justify-content-center">
-        <div class="row d-flex justify-content-center py-2 w-75">
-            <div id='map' class="m-auto w-75"></div>
+    <div class="container-fluid my-1">
+        <div class="row p-3">
+            <div id='map' class="col"></div>
         </div>
     </div>
      /
@@ -207,10 +206,10 @@
             var dayCount = 0;
             var selector = '';
             for (var i = 0; i < dateArr.length ; i++) {
-                var html = '<div class="card mx-4">'
+                var html = '<div class="card mx-1">'
                     html += '<div class="card-header text-center date">' + dateArr[i] + '</div>';
                     html += '<ul class="list-group list-group-flush">';
-                    html += '<li class="list-group-item d-flex justify-content-column"><div>' + maxTempArr[i]+ 'F / ' + minTempArr[i] + 'F ' + '</div><img src="http://openweathermap.org/img/w/' + wxIconArr[i] +'.png"></li>'; //max temp
+                    html += '<li class="list-group-item text-center"><div>' + maxTempArr[i]+ 'F / ' + minTempArr[i] + 'F ' + '</div><img src="http://openweathermap.org/img/w/' + wxIconArr[i] +'.png"></li>'; //max temp
                     html += '<li class="list-group-item text-center">' + wxDescArr[i] +  '</li>'; // cloud cond
                     html += '<li class="list-group-item text-center">' + cloudArr[i] +  '</li>'; // cloud cond
                     html += '<li class="list-group-item text-center">' + 'Humidity: ' + maxHumidityArr[i] + '</li>'; //humidity
