@@ -486,25 +486,19 @@
     $('button').click(function(e) {
         e.preventDefault();
         var userLocation = $('#location').val();
-
-        const lngLat = geocode(userLocation, mapboxToken);
-        console.log(lngLat);
-        $.get("http://api.openweathermap.org/data/2.5/forecast", {
-            APPID: openWeatherMapAPIkey,
-            lat:    lngLat[0],
-            lon:   lngLat[1],
-            units: "imperial"
-        }).done(function(data) {
-            makeCard(data);
+        geocode(userLocation, mapboxToken).then(function(result) {
+            console.log(result); //console log's the lat, long
+            map.setCenter(result);
+            map.setZoom(12);
+            $.get("http://api.openweathermap.org/data/2.5/forecast", {
+                APPID: openWeatherMapAPIkey,
+                lat:    result[0],
+                lon:   result[1],
+                units: "imperial"
+            }).done(function(data) {
+                makeCard(data);
+            });
         });
-
-        // console.log(userLocation);
-        // var userLatLon = geocode(userLocation, mapboxToken);
-        // geocode(userLocation, mapboxToken).then(function(result) {
-        //     console.log(result);
-        //     map.setCenter(result);
-        //     map.setZoom(12);
-        // });
     });
 
     </script>
