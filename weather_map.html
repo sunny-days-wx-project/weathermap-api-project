@@ -65,7 +65,6 @@
             <div id='map' class="col"></div>
         </div>
     </div>
-     /
     <!-- jQuery/AJAX library addition (need AJAX to run AJAX)-->
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
@@ -183,7 +182,9 @@
 
 // =================================================
  </script> <!--Pseudo-code-->
+    <!--// map marker and longlat box from mapbox api doc  https://docs.mapbox.com/mapbox-gl-js/example/drag-a-marker/-->
 
+    <pre id="coordinates" className="coordinates"></pre>
     <script>
         // write a function that takes in the data, runs 5 days worth of data 1 day at a time, and produces and injects
         // a 'day' card for each of the 5 day cards
@@ -199,7 +200,8 @@
             var maxHumidityArr = getHumidity(response);
             var maxWind = getWind(response);
             var wxIconArr = getWeatherIcon(response);
-            var wxDescArr = getWeatherDesc(response)
+            var wxDescArr = getWeatherDesc(response);
+            var maxPressureArr = getPressure(response);
             // var maxPressure = getPressure(response);
 
             // dateArr, maxTempArr, minTempArr, cloudArr, maxHumidityArr
@@ -212,9 +214,9 @@
                     html += '<li class="list-group-item text-center"><div>' + maxTempArr[i]+ 'F / ' + minTempArr[i] + 'F ' + '</div><img src="http://openweathermap.org/img/w/' + wxIconArr[i] +'.png"></li>'; //max temp
                     html += '<li class="list-group-item text-center">' + wxDescArr[i] +  '</li>'; // cloud cond
                     html += '<li class="list-group-item text-center">' + cloudArr[i] +  '</li>'; // cloud cond
-                    html += '<li class="list-group-item text-center">' + 'Humidity: ' + maxHumidityArr[i] + '</li>'; //humidity
-                    html += '<li class="list-group-item text-center">' + 'Wind: ' + maxWind[i] + '</li>'; //wind
-                    html += '<li class="list-group-item text-center">' + 'Pressure: ' + '</li>'; //pressure
+                    html += '<li class="list-group-item text-center">' + 'Humidity: ' + maxHumidityArr[i] + '%'+'</li>'; //humidity
+                    html += '<li class="list-group-item text-center">' + 'Wind: ' + maxWind[i] + 'mph'+'</li>'; //wind
+                    html += '<li class="list-group-item text-center">' + 'Pressure: ' + maxPressureArr[i] +'bar'+'</li>'; //pressure
                 html += '</ul>';
                 html += '</div>';
                 dayCount++;
@@ -454,6 +456,48 @@
         }
         return dateArr;
     }
+
+        function getPressure(data) {
+            var pressureArr = [];
+            var threeHourForecasts = data.list;
+            for (var i = 4; i < threeHourForecasts.length; i+=8) {
+                var pressureForecast = threeHourForecasts[i]; //this is a single forecast
+                var pressureReport = pressureForecast.main.pressure;
+                pressureArr.push(pressureReport/1000);
+            }
+            return pressureArr;
+        }
+
+        // map marker and longlat box from mapbox api doc  https://docs.mapbox.com/mapbox-gl-js/example/drag-a-marker/
+
+
+
+        const marker = new mapboxgl.Marker({
+            draggable: true
+        })
+            .setLngLat([-98, 30])
+            .addTo(map);
+
+        function onDragEnd() {
+            const lngLat = marker.getLngLat();
+            console.log(lngLat);
+            coordinates.style.display = 'block';
+            coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+            $.get("http://api.openweathermap.org/data/2.5/forecast", {
+                APPID: openWeatherMapAPIkey,
+                lat:    lngLat.lat,
+                lon:   lngLat.lng,
+                units: "imperial"
+            }).done(function(data) {
+                makeCard(data);
+                console.log('The entire response:', data);
+                // console.log('Diving in - here is current information: ', data.current);
+                // console.log('A step further - information for tomorrow: ', data.daily[1]);
+            });
+
+        }
+
+        marker.on('dragend', onDragEnd);
 
 
     </script>
