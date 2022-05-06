@@ -41,7 +41,7 @@
             <div class="row p-2" id="row-form">
                 <div class="col-8"></div>
                 <form class="col-4 form-inline m-0 py-3 justify-content-end">
-                    <input type="text" class="form-control mx-2 w-75" id="location" placeholder="City, State">
+                    <input type="text" class="form-control mx-2 w-75" id="location" placeholder="City, US">
                     <button id="submit" class="btn btn-primary mx-2">Find</button>
                 </form>
             </div> <!--End of row-form div-->
@@ -498,6 +498,8 @@
             console.log(result); //console log's the lat, long
             map.setCenter(result);
             map.setZoom(12);
+            marker.setLngLat(result);
+
         });
     });
 
