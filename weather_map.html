@@ -486,18 +486,18 @@
     $('button').click(function(e) {
         e.preventDefault();
         var userLocation = $('#location').val();
+        $.get("http://api.openweathermap.org/data/2.5/forecast", {
+            APPID: openWeatherMapAPIkey,
+            q: userLocation,
+            units: "imperial"
+        }).done(function(data) {
+            console.log(data);
+            makeCard(data);
+        });
         geocode(userLocation, mapboxToken).then(function(result) {
             console.log(result); //console log's the lat, long
             map.setCenter(result);
             map.setZoom(12);
-            $.get("http://api.openweathermap.org/data/2.5/forecast", {
-                APPID: openWeatherMapAPIkey,
-                lat:    result[0],
-                lon:   result[1],
-                units: "imperial"
-            }).done(function(data) {
-                makeCard(data);
-            });
         });
     });
 
