@@ -42,7 +42,7 @@
                 <div class="col-8"></div>
                 <form class="col-4 form-inline m-0 py-3 justify-content-end">
                     <input type="text" class="form-control mx-2 w-75" id="location" placeholder="City, State">
-                    <button type="submit" id="submit" class="btn btn-primary mx-2">Find</button>
+                    <button id="submit" class="btn btn-primary mx-2">Find</button>
                 </form>
             </div> <!--End of row-form div-->
         </div> <!--End of this container-->
@@ -93,7 +93,7 @@
             let map = new mapboxgl.Map({
                 container: 'map', // container ID
                 style: 'mapbox://styles/mapbox/streets-v11', // style URL
-                center: [-98, 30], // starting position [lng, lat]
+                center: [-98.5, 29.4], // starting position [lng, lat]
                 zoom: 9 // starting zoom
             });
         //====================================================
@@ -462,7 +462,7 @@
         const marker = new mapboxgl.Marker({
             draggable: true
         })
-            .setLngLat([-98, 30])
+            .setLngLat([-98.5, 29.4])
             .addTo(map);
 
         function onDragEnd() {
@@ -483,16 +483,29 @@
 
         marker.on('dragend', onDragEnd);
 
+    $('button').click(function(e) {
+        e.preventDefault();
+        var userLocation = $('#location').val();
 
- // <input type="test" className="form-control mx-2 w-75" id="location" placeholder="City, State">
- // <button type="submit" className="btn btn-primary mx-2">Find</button>
+        const lngLat = geocode(userLocation, mapboxToken);
+        console.log(lngLat);
+        $.get("http://api.openweathermap.org/data/2.5/forecast", {
+            APPID: openWeatherMapAPIkey,
+            lat:    lngLat[0],
+            lon:   lngLat[1],
+            units: "imperial"
+        }).done(function(data) {
+            makeCard(data);
+        });
 
-    $('#submit').click(function() {
-        // e.preventDefault();
-        var userLocation = $('input').value;
-        console.log(userLocation);
-        geocode(userLocation, mapboxToken);
-    }());
+        // console.log(userLocation);
+        // var userLatLon = geocode(userLocation, mapboxToken);
+        // geocode(userLocation, mapboxToken).then(function(result) {
+        //     console.log(result);
+        //     map.setCenter(result);
+        //     map.setZoom(12);
+        // });
+    });
 
     </script>
 
