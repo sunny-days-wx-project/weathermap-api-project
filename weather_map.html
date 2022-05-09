@@ -30,22 +30,25 @@
 <body>
     <!--Header Starts Here-->
         <div class="container-fluid ">
-            <div class="row pt-3 pb-2" id="row-header">
-                <div class="col-8  d-flex align-items-center mb-0"><h1 class="mb-0">Weather App</h1></div>
-                <div class="col-4 d-flex align-items-center justify-content-end"><p class="mb-0">Current City: San Antonio</p></div>
+            <div class="row pt-3 pb-2 align-items-center" id="row-header">
+                <div class="col-6 align-items-center mb-0"><h1 class="mb-0">Weather App</h1></div>
+                <div class="col-4 m-0 py-3">
+                <form class="form-inline justify-content-end">
+                    <input type="text" class="form-control mx-2 w-75" id="location" placeholder="City, Country">
+                    <button id="submit" class="btn btn-primary mx-2">Find</button>
+                </form>
+                </div>
+                <div class="col-2 align-items-center justify-content-end"><p id="town" class="mb-0 d-flex w-100 justify-content-end"
+                                                                             style="font-size: 20px">Current City: San Antonio</p></div>
             </div> <!--End of row-header-->
         </div> <!-- End of this container-->
 
-    <!--Search Bar starts here-->
-        <div class="container-fluid">
-            <div class="row p-2" id="row-form">
-                <div class="col-8"></div>
-                <form class="col-4 form-inline m-0 py-3 justify-content-end">
-                    <input type="text" class="form-control mx-2 w-75" id="location" placeholder="City, US">
-                    <button id="submit" class="btn btn-primary mx-2">Find</button>
-                </form>
-            </div> <!--End of row-form div-->
-        </div> <!--End of this container-->
+<!--    &lt;!&ndash;Search Bar starts here&ndash;&gt;-->
+<!--        <div class="container-fluid">-->
+<!--            <div class="row p-2" id="row-form">-->
+<!--                <div class="col-8"></div>-->
+<!--            </div> &lt;!&ndash;End of row-form div&ndash;&gt;-->
+<!--        </div> &lt;!&ndash;End of this container&ndash;&gt;-->
 
     <!--5 Day Forecast Cards Starts here-->
         <div class="container-fluid">
@@ -493,6 +496,28 @@
         }).done(function(data) {
             console.log(data);
             makeCard(data);
+            var coords = data.city.coord;
+
+            reverseGeocode(Object.values(coords).reverse(), mapboxToken).then(function(result) {
+                result = result.split(', ');
+                // var numberCheck = result.substring(result.length-2, result.length-1);
+                // numberCheck = Number(numberCheck);
+                // if (typeof numberCheck === 'number' && numberCheck !== 'NaN') {
+                    $('#town').html('Current City: ' + result[result.length-3]);
+                // }
+                // else {
+                // var cityTwo = result[2];
+                // var cityOne= result[1];
+                // if (typeof cityOne.substring(cityOne.length-4, cityTwo.length-1) !== 'number') {
+                //     $('#town').html('Current City: ' + result[1]);
+                //     console.log(result)
+                // }
+                // else {
+                //     $('#town').html('Current City: ' + result[2]);
+                //     console.log(result)
+                // }
+                // }
+            });
         });
         geocode(userLocation, mapboxToken).then(function(result) {
             console.log(result); //console log's the lat, long
@@ -500,7 +525,10 @@
             map.setZoom(12);
             marker.setLngLat(result);
 
+
+
         });
+        // reverseGeocode(userLocation, mapboxToken)
     });
 
     </script>
